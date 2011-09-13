@@ -1,6 +1,6 @@
 import unittest
 from node import Node
-from ex6 import *
+from bfs_dfs import *
 
 class TestNode(unittest.TestCase):
 
@@ -15,16 +15,14 @@ class TestNode(unittest.TestCase):
 
     def test_DFS(self):
       print "DFS: "
-      result = DFSearch(self.graph, "E")
+      result = DFSearch(self.graph, "H")
       print result
-      print_route(result[1])
       print
 
     def test_BFS(self):
       print "BFS: "
-      result = BFSearch(self.graph, "E")
+      result = BFSearch(self.graph, "H")
       print result
-      print_route(result[1])
       print
 
 if __name__ == '__main__':
