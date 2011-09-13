@@ -18,15 +18,12 @@ class Node(object):
 
   def set_reached(self, from_node):
     """docstring for set_reached"""
-    self.reached_from = from_node
+    self._reached_from = from_node
 
   def parent(self):
     if len(self._parent) == 0:
       return None
-    ret_string = "("
-    for node in self._parent:
-      ret_string = ret_string + node.value + ", "
-    return ret_string[:-2] + ")"
+    return "(" + ", ".join([node.value for node in self._parent]) + ")"
 
   def reached_from(self):
     if self._reached_from is None:
@@ -43,3 +40,6 @@ class Node(object):
 
   def __str__(self):
     return self.__repr__()
+
+  def __cmp__(self, other):
+    return cmp(self.value, other.value)

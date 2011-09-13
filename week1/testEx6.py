@@ -14,10 +14,18 @@ class TestNode(unittest.TestCase):
       e_node = Node("E", [f_node])
 
     def test_DFS(self):
-      print DFSearch(self.graph, "E")
+      print "DFS: "
+      result = DFSearch(self.graph, "E")
+      print result
+      print_route(result[1])
+      print
 
     def test_BFS(self):
-      print BFSearch(self.graph, "E")
+      print "BFS: "
+      result = BFSearch(self.graph, "E")
+      print result
+      print_route(result[1])
+      print
 
 if __name__ == '__main__':
   unittest.main()
