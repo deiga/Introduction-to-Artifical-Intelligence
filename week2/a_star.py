@@ -23,13 +23,13 @@ def search(root_node, goal):
 def _add_a_star(popped_node, nodes):
   return_prioq = nodes
   for v, k in popped_node.neighbors:
-    if not k.explored and is_smallest((v, k), return_prioq):
+    if is_smallest((v, k), return_prioq):
       k.set_reached(popped_node)
+    if not k.explored and is_smallest((v, k), return_prioq):
       return_prioq[k] = v
   return return_prioq
 
 def is_smallest((estimate,node), node_estimate_list):
-  print (node, estimate)
   if node in node_estimate_list:
     return estimate < node_estimate_list[node]
   return True
