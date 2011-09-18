@@ -6,19 +6,19 @@ from node import Node
 sys.path.append('../')
 from priority_dict import *
 
-def search(root_node, goal):
-  root_node.set_explored()
-  nodes = priority_dict();
-  nodes[root_node] = 0
-  while len(nodes) > 0:
-    print"Solmulista: " + ", ".join([str((k.value, v)) for k,v in nodes.items()])
-    test_node = nodes.pop_smallest()
-    print "Solmu: " + test_node.value
-    if test_node.value == goal:
-      return("Ratkaisu: ", test_node)
-    test_node.set_explored()
-    nodes = _add_a_star(test_node, nodes)
-  return ("Ei ratkaisua", test_node)
+def search(beginning, goal):
+  node_list = priority_dict();
+  node = Node(beginning[0], beginning[1])
+  node_list[node] = 0
+  while len(node_list) > 0:
+    print"Solmulista: " + ", ".join([str((k.state, v)) for k,v in node_list.items()])
+    node = node_list.pop_smallest()
+    print "Solmu: " + node.state[0].name + ", " + str(node.state[1])
+    if node.state[0].name == goal:
+      return("Ratkaisu: ", node)
+    node.set_explored()
+    node_list = _add_a_star(node, node_list)
+  return ("Ei ratkaisua", node)
 
 def _add_a_star(popped_node, nodes):
   return_prioq = nodes
@@ -33,6 +33,20 @@ def is_smallest((estimate,node), node_estimate_list):
   if node in node_estimate_list:
     return estimate < node_estimate_list[node]
   return True
+
+def neighbors(node):
+  neighbor_nodes = []
+  stop = node.stop()
+  time = node.time()
+  for line in [trans[0] for trans in node.transportations]:
+    wait_time = calculate_wait_time(line,stop,time)
+    next_stop =
+    pass
+
+def calculate_wait_time(line_name, stop, time):
+  next_line = [x[1] for x in stop.transportations if x[0] == line_name].pop()
+  next_time = next_time[1]
+  return time - next_time if next_time < time else 60 - time + next_time
 
 def print_route(last_node):
   tmp_list = []
