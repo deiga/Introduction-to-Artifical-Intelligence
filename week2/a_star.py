@@ -5,10 +5,15 @@ sys.path.append('../week1/')
 from node import Node
 sys.path.append('../')
 from priority_dict import *
+import math
 
 path = []
+goal_stop = None
+SPEED = 100
 
 def search(beginning, goal):
+  global path, goal_stop
+  goal_stop = goal
   node_list = priority_dict()
   node_list[beginning[0]] = beginning[1]
   while len(node_list) > 0:
@@ -19,14 +24,14 @@ def search(beginning, goal):
     path.append((node.name, time))
     print "Solmu: " + node.name + ", " + str(time)
     node_list.pop_smallest()
-    if node.name == goal:
+    if node.name == goal_stop.name:
       return("Ratkaisu: ", node)
     node_list = _add_a_star(neighbors(node, time), node_list)
   return ("Ei ratkaisua", node)
 
 def _add_a_star(neighs, nodes):
+  global path
   return_prioq = nodes
-  print neighs
   for stop, time in neighs:
     if stop.name not in [foo[0] for foo in path]:
       return_prioq[stop] = time
@@ -47,7 +52,6 @@ def neighbors(stop, time):
     if next_stop is not None and next_stop.name not in [foo[0] for foo in path]:
       travel_time = calculate_travel_time(line, stop, next_stop)
       neighbor_nodes.append((next_stop, time+wait_time+travel_time))
-  print "NN: " + str(neighbor_nodes)
   return neighbor_nodes
 
 def calculate_wait_time(line_name, stop, time):
@@ -62,7 +66,6 @@ def get_next_stop(line_name, stop):
       if trans_name == line_name and stop is not neighbor:
         return neighbor
 
-
 def calculate_travel_time(line_name, prev_stop, next_stop):
   for trans_name, trans in prev_stop.transportations:
     if trans_name == line_name:
@@ -72,7 +75,14 @@ def calculate_travel_time(line_name, prev_stop, next_stop):
     if trans_name == line_name:
       next_time = trans[1]
       break
-  return next_time - prev_time
+  goal_time = calculate_time_to_goal(prev_stop)
+  return (next_time + goal_time) - prev_time
+
+def calculate_time_to_goal(current):
+  print goal_stop
+  distance = math.pow(math.fabs(current.x - goal_stop.x), 2) + math.pow(math.fabs(current.y - goal_stop.y), 2 )
+  distance = math.sqrt(distance)
+  return distance/SPEED
 
 def print_route(last_node):
   tmp_list = []

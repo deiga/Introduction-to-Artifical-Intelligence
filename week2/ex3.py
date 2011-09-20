@@ -10,7 +10,11 @@ class TestAStar(unittest.TestCase):
       self.file_ops = File_ops()
 
     def test_search(self):
-      result = search((self.file_ops.stops[0], 0), 'Töölööntori')
+      for stop in self.file_ops.stops:
+        if stop.name == 'Töölöntori':
+          goal = stop
+          break
+      result = search((self.file_ops.stops[0], 0), goal)
       print result
 
 if __name__ == '__main__':
