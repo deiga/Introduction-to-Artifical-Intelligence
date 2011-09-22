@@ -17,5 +17,14 @@ class TestAStar(unittest.TestCase):
       result = search((self.file_ops.stops[0], 0), goal)
       print result
 
+    def test_graph(self):
+      return
+      print "Graph:"
+      for stop in self.file_ops.stops:
+        print stop.name
+        print stop.neighbors
+        print
+      print "End"
+
 if __name__ == '__main__':
   unittest.main()

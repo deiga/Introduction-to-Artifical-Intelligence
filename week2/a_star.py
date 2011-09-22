@@ -1,5 +1,11 @@
 #!/usr/bin/python
 # This Python file uses the following encoding: utf-8
+
+# Ajan laskenta ei toimi, koska nyt lasketaan pelkkää heuristiikan aikaa
+# eikä oikeaa kulunutta aikaa
+
+# Naapurisolmujen lisääminen jonoon virheellinen
+
 import sys
 sys.path.append('../week1/')
 from node import Node
@@ -9,7 +15,7 @@ import math
 
 path = []
 goal_stop = None
-SPEED = 100
+SPEED = 200
 
 def search(beginning, goal):
   global path, goal_stop
@@ -20,23 +26,25 @@ def search(beginning, goal):
     print"Solmulista: " + ", ".join([str((k, v)) for k,v in node_list.items()])
     node = node_list.smallest()
     time = node_list[node]
-    print "Path: " + str(path)
     path.append((node.name, time))
     print "Solmu: " + node.name + ", " + str(time)
     node_list.pop_smallest()
     if node.name == goal_stop.name:
       return("Ratkaisu: ", node)
     node_list = _add_a_star(neighbors(node, time), node_list)
+  print "Path: " + str(path)
   return ("Ei ratkaisua", node)
 
 def _add_a_star(neighs, nodes):
   global path
   return_prioq = nodes
   for stop, time in neighs:
-    if stop.name not in [foo[0] for foo in path]:
+    if stop.name in [foo[0] for foo in path]:
+      continue
+    if stop not in return_prioq.keys():
       return_prioq[stop] = time
-      if is_smallest(stop, time, return_prioq):
-        path.append((stop, time))
+    elif is_smallest(stop, time, return_prioq):
+        return_prioq[stop] = time
   return return_prioq
 
 def is_smallest(stop, time, node_estimate_list):
@@ -49,6 +57,7 @@ def neighbors(stop, time):
   for line in [trans[0] for trans in stop.transportations]:
     wait_time = calculate_wait_time(line,stop,time)
     next_stop = get_next_stop(line, stop)
+    print "L: " + line + " wait: " +str(wait_time) + " next: " + str(next_stop)
     if next_stop is not None and next_stop.name not in [foo[0] for foo in path]:
       travel_time = calculate_travel_time(line, stop, next_stop)
       neighbor_nodes.append((next_stop, time+wait_time+travel_time))
@@ -79,10 +88,9 @@ def calculate_travel_time(line_name, prev_stop, next_stop):
   return (next_time + goal_time) - prev_time
 
 def calculate_time_to_goal(current):
-  print goal_stop
   distance = math.pow(math.fabs(current.x - goal_stop.x), 2) + math.pow(math.fabs(current.y - goal_stop.y), 2 )
   distance = math.sqrt(distance)
-  return distance/SPEED
+  return int(distance/SPEED)
 
 def print_route(last_node):
   tmp_list = []
