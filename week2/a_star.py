@@ -57,7 +57,7 @@ def neighbors(stop, time):
   for line in [trans[0] for trans in stop.transportations]:
     wait_time = calculate_wait_time(line,stop,time)
     next_stop = get_next_stop(line, stop)
-    print "L: " + line + " wait: " +str(wait_time) + " next: " + str(next_stop)
+    # print "L: " + line + " wait: " +str(wait_time) + " next: " + str(next_stop)
     if next_stop is not None and next_stop.name not in [foo[0] for foo in path]:
       travel_time = calculate_travel_time(line, stop, next_stop)
       neighbor_nodes.append((next_stop, time+wait_time+travel_time))
