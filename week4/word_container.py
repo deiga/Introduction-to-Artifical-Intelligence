@@ -21,10 +21,16 @@ class WordContainer(object):
         vals = line.split()
         self.spam[vals[1]] = vals[0]
 
-  def get_ham_p(hamword):
-    occurrences = self.ham[hamword]
-    return occurrences/len(self.ham)
+  def get_ham_p(self, hamword):
+    try:
+      occurrences = self.ham[hamword]
+      return occurrences/len(self.ham)
+    except KeyError:
+      return 1
 
-  def get_spam_p(spamword):
-    occurrences = self.spam[spamword]
-    return occurrences/len(self.spam)
+  def get_spam_p(self, spamword):
+    try:
+      occurrences = self.spam[spamword]
+      return occurrences/len(self.spam)
+    except KeyError:
+      return 1

@@ -1,16 +1,22 @@
 from word_container import WordContainer
-import Math
+import math
 
-wc = new WordContainer()
+wc = WordContainer()
 
 def spamicity(msg):
   """docstring for spamicity"""
-  logOdds = Math.log(0.5/0.5)
+  logOdds = math.log(0.5/0.5)
   for word in msg.split():
-    logOdds = logOdds + Math.log(wc.get_spam_p(word)/wc.get_ham_p(word))
-  return Math.exp(logOdds)
-#  SPAMICITY(Viesti, P):
-#  ￼￼￼logOdds = log(P.Spam / P.noSpam) // P.Spam + P.noSpam = 1
-#     for each Sana in Viesti
-#       logOdds = logOdds + log(P.Sana_Spam(Sana) / P.Sana_noSpam(Sana))
-#      return(exp(logOdds))
+    logOdds = logOdds + math.log(wc.get_spam_p(word)/wc.get_ham_p(word))
+  return math.exp(logOdds)
+
+mesg = "SPECIAL OFFER : VIAGRA on SALE at $1.38 !!! \nCompare the best online pharmacies to buy Viagra. Order Viagra online with huge discount. Multiple benefits include FREE shipping, Reorder discounts, Bonus pills"
+print spamicity(mesg)
+
+
+mesg = "Hi Timo Sand, \nHere is a new event for stuff in your tracker. Check out your upcoming events calendar to see them all. \nOCTOBER 2011 \nSaturday 22 \nKemopetrol at Virgin Oil Co., Helsinki, Finland \nBuy tickets"
+print spamicity(mesg)
+
+
+mesg = "Prepare for amazing winnings at Kings Spin \n\nhttp://www.spinlotcasino.com/?id1b6e583627f73f89d21ef87a88a6a6c24093141fc36380a4e0"
+print spamicity(mesg)
